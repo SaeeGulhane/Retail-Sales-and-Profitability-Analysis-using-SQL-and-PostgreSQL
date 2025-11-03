@@ -1,0 +1,71 @@
+SELECT City,
+       SUM(unit_price * quantity) AS total_revenue
+FROM walmart
+GROUP BY city
+ORDER BY total_revenue DESC;
+
+SELECT category,
+       AVG(profit_margin) AS avg_profit_margin
+FROM walmart
+GROUP BY category
+ORDER BY avg_profit_margin DESC;
+
+SELECT 
+    payment_method,
+    ROUND(AVG(rating)::numeric, 2) AS avg_rating
+FROM walmart
+GROUP BY payment_method
+ORDER BY avg_rating DESC;
+
+SELECT branch,
+       category,
+       SUM(quantity) AS total_quantity
+FROM walmart
+GROUP BY branch, category
+ORDER BY branch, total_quantity DESC;
+
+SELECT branch,
+       SUM(unit_price * quantity * profit_margin) AS total_profit
+FROM walmart
+GROUP BY branch
+ORDER BY total_profit DESC;
+
+SELECT category,
+       SUM(unit_price * quantity) AS total_revenue
+FROM walmart
+GROUP BY category
+ORDER BY total_revenue DESC
+LIMIT 3;
+
+SELECT 
+    city,
+    COUNT(invoice_id) AS total_transactions
+FROM walmart
+GROUP BY city
+ORDER BY total_transactions DESC;
+
+SELECT 
+    EXTRACT(HOUR FROM time::time) AS sale_hour,
+    COUNT(invoice_id) AS total_transactions
+FROM walmart
+GROUP BY sale_hour
+ORDER BY total_transactions DESC
+LIMIT 1;
+
+SELECT 
+    city,
+    category,
+    SUM(unit_price * quantity * profit_margin) AS total_profit
+FROM walmart
+GROUP BY city, category
+QUALIFY RANK() OVER (PARTITION BY city ORDER BY SUM(unit_price * quantity * profit_margin) DESC) = 1;
+
+SELECT 
+    payment_method,
+    SUM(unit_price * quantity) AS total_revenue
+FROM walmart
+GROUP BY payment_method
+ORDER BY total_revenue DESC;
+
+
+
